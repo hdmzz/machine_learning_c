@@ -11,19 +11,36 @@ float	train[][2] = {
 	{4, 8},
 };
 
-float	rand_float( void ) {
+float	rand_float( void )
+{
 	return (( float )rand() / (float)RAND_MAX );//un nombre flottant entre 0 et 1;
 };
 
-int	main( void )
+float	cost( float w )
 {
-	srand( 69 ); // Initialisation du générateur de nombres aléatoires
-	float	w = rand_float() * 10.0f;
-//on va mutiplier le x jusquq ce qu'on trouve e bon resultat vec le w
+	float	result = 0.0f;
 	for ( size_t i = 0; i < train_count; i++ ) {
 		float	x = train[i][0];
-		float	y  = x * w;
+		float	y = x * w;
+		float	d = y - train[i][1];
+		result += d*d;
 		printf("expected %f, results %f\n", train[i][1], y);
 	};
+	result /= train_count;
+
+	return ( result );
+};
+//prochaien etape peut etre faire un algoritme qui trouve la derivative d la fonction cost pour aller dans le sens inverse et se rapprocher de 0
+//nerd shit 
+// matrice et derivative en meme temps voila le proleme 
+//questce qune dderivative 
+int	main( void )
+{
+	srand( 69 );
+	float	w = rand_float() * 10.0f;
+	float	eps = 1e-3f;
+	printf("average error : %f\n", cost( w ));
+	printf("average error epsilon : %f\n", cost( w - eps ));
+	printf("average error epsilon : %f\n", cost( w - eps*2 ));
 	return ( 0 );
-}
+};
