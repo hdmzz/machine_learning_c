@@ -34,9 +34,9 @@ float	predict( float x, float w, float b )
 void	validate_model(float w, float b)
 {
 	for ( size_t i = 0; i < test_count; i++ ) {
-		float	x = test_data[0][i];
+		float	x = test_data[i][0];
 		float	predicted = predict(x, w, b);
-		float	actual = test_data[0][i];
+		float	actual = test_data[i][1];
 		printf("input: %f, predicted: %f, actual: %f\n", x, predicted, actual);
 	};
 };
@@ -54,29 +54,51 @@ float	cost( float w, float b )
 
 	return ( result );
 };
-//prochaine etape peut etre faire un algoritme qui trouve la derivative d la fonction cost pour aller dans le sens inverse et se rapprocher de 0
-//nerd shit
-// matrice et derivative en meme temps voila le proleme
-//questce qune dderivative
+
+
+
 int	main( void )
 {
 	srand(69);
 	float	w = rand_float() * 10.0f;
+	float	b = rand_float() * 5.0f;
 	float	eps = 1e-3;
 	float	learing_rate = 1e-3;
-	float	b = rand_float() * 5.0f;
-	for (size_t i = 0; i < 10000; i++) {
-		float	cost_result = cost(w, b);
-		float	dw = (cost(w + eps, b) - cost_result) / eps;
-		float	db = (cost(w, b + eps) - cost_result) / eps;
+	float	error_treshold = 1e-6;
+
+	float	best_w = w;
+	float	best_b = b;
+	float	best_error = __FLT_MAX__;
+	long	i = 0;
+	float	current_error = cost(w, b);
+
+	while (current_error > error_treshold) {
+		float	previous_error = current_error;
+		current_error = cost(w, b);
+		if ( current_error < best_error ) {
+			best_w = w;
+			best_b = b;
+			best_error = current_error;
+		};
+
+		if ( current_error > previous_error ) {
+			learing_rate *= 0.9;
+		} else {
+			learing_rate *= 1.1;
+		};
+
+		//!calcul des gradients
+		float	dw = (cost(w + eps, b) - current_error) / eps;
+		float	db = (cost(w, b + eps) - current_error) / eps;
 
 		w -= dw * learing_rate;
 		b -= db * learing_rate;
 		if ( i % 500 == 0 )
-		printf( "average error : %f, weight: %f, bias: %f\n", cost_result, w, b);
+		printf( "average error : %f, weight: %f, bias: %f\n", current_error, w, b);
 	};
 	printf( "--------------------------------------\n" );
 	printf( "w: %f, b: %f\n", w, b );
+	validate_model(best_w, best_b);
 
 	return ( 0 );
 };

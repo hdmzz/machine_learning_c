@@ -10,7 +10,7 @@ SRC = $Smain.c
 OBJ = $(SRC:$S%=$O%.o)
 
 CC = gcc
-CFLAGS = -g3 -Wall -Wextra -Werror
+CFLAGS = -g3 -Wall -Wextra
 
 .PHONY: all fclean re
 
