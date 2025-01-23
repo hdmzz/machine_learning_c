@@ -36,13 +36,13 @@ float	sigmoidf(float x)
  * On fait cela pour chaque ligne de la table de veritée et on ajuste les poids
  * @Function Relu utilisée pour enlever les resultats négatifs
  */
-float	cost(float w1, float w2)
+float	cost(float w1, float w2, float b)
 {
 	float	result = 0.0f;
 	for ( size_t i = 0; i < train_count; i++ ) {
 		float	x1 = train_data[i][0];
 		float	x2 = train_data[i][1];
-		float	y = relu(x1*w1 + x2*w2);
+		float	y = sigmoidf(x1*w1 + x2*w2 + b);
 		float	d = y - train_data[i][2];
 		result += d*d;
 	};
@@ -60,25 +60,27 @@ float	rand_float( void )
 /**
  * @main Le deroule des operations:
  * definir les 2 poids de depart puis un epslion et la learning rate
- * 
  */
 int	main(void)
 {
 	srand(69);
 	float	w1 = rand_float();
 	float	w2 = rand_float();
+	float 	b = rand_float();
 
 	float	eps = 1e-3;//
-	float	rate = 1e-3;//learning rate
+	float	rate = 1e-1;//learning rate
 
 	for (size_t i = 0; i < 5000; i++) {
-		float	c = cost(w1, w2);
-		printf("w1: %f, w2: %f c:%f\n", w1, w2, c);
-		float	dw1 = (cost(w1, w2 + eps) - c) / eps;
-		float	dw2 = (cost(w1 + eps, w2) - c) / eps;
+		float	c = cost(w1, w2, b);
+		float	dw1 = (cost(w1 + eps, w2, b) - c) / eps;
+		float	dw2 = (cost(w1, w2 + eps, b) - c) / eps;
+		float	db = (cost(w1, w2, b + eps) - c) / eps;
 
 		w1 -= rate*dw1;
 		w2 -= rate*dw2;
+		b -= rate*db;
 	};
+	printf("w1: %f, w2: %f, cost: %f\n", w1, w2, cost(w1, w2, b));
 	return (0);
-};
+}
