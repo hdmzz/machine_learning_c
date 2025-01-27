@@ -4,14 +4,29 @@
 #include <time.h>
 #include <math.h>
 #define train_count (sizeof(train_data) / sizeof(train_data[0]))
+//AND gate
+//float	train_data[][3] = {
+//	{0, 0, 0},
+//	{1, 0, 0},
+//	{0, 1, 0},
+//	{1, 1, 1},
+//};
 
+//OR Gate
+//float	train_data[][3] = {
+//	{0, 0, 0},
+//	{1, 0, 1},
+//	{0, 1, 1},
+//	{1, 1, 1},
+//};
+
+//NAND gate ou and gate inversee
 float	train_data[][3] = {
-	{0, 0, 0},
-	{1, 0, 0},
-	{0, 1, 0},
-	{1, 1, 1},
+	{0, 0, 1},
+	{1, 0, 1},
+	{0, 1, 1},
+	{1, 1, 0},
 };
-
 /**
  * @param x le resultat de l'addition
  */
@@ -42,7 +57,7 @@ float	cost(float w1, float w2, float b)
 	for ( size_t i = 0; i < train_count; i++ ) {
 		float	x1 = train_data[i][0];
 		float	x2 = train_data[i][1];
-		float	y = relu(x1*w1 + x2*w2 + b);
+		float	y = sigmoidf(x1*w1 + x2*w2 + b);
 		float	d = y - train_data[i][2];
 		result += d*d;
 	};
@@ -66,7 +81,7 @@ int	main(void)
 	srand(time(0));
 	float	w1 = rand_float();
 	float	w2 = rand_float();
-	float 	b = rand_float();
+	float	b = rand_float();
 
 	float	eps = 1e-1;//
 	float	rate = 1e-1;//learning rate
@@ -85,7 +100,7 @@ int	main(void)
 
 	for (size_t i = 0; i < 2; i++){
 		for (size_t j = 0; j < 2; j++){
-			printf("%zu | %zu = %f\n", i, j, relu(i*w1 + j*w2 + b));
+			printf("%zu | %zu = %f\n", i, j, sigmoidf(i*w1 + j*w2 + b));
 		};
 	};
 	return (0);
