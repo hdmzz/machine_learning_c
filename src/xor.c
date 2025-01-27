@@ -244,5 +244,12 @@ int	main(void)
 		Xor		g = finite_diff(m, epsilon);
 		m = learn(m , g, learnin_rate);
 	};
+
+	printf("------------------------------\n");
+	for (size_t i = 0; i < 2; ++i) {
+		for (size_t j = 0; j < 2; ++j) {
+			printf("%zu ^ %zu = %f\n", i, j, forward(m, i, j));
+		}
+	}
 	return (0);
 };
