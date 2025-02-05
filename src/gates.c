@@ -71,7 +71,6 @@ float	rand_float( void )
 	return ((float)rand() / (float)RAND_MAX);//un nombre flottant entre 0 et 1;
 };
 
-
 /**
  * @main Le deroule des operations:
  * definir les 2 poids de depart puis un epslion et la learning rate
@@ -83,7 +82,7 @@ int	main(void)
 	float	w2 = rand_float();
 	float	b = rand_float();
 
-	float	eps = 1e-1;//
+	float	eps = 1e-1;
 	float	rate = 1e-1;//learning rate
 
 	for (size_t i = 0; i < 10000; i++) {

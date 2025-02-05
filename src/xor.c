@@ -242,7 +242,7 @@ int	main(void)
 
 	for (size_t i = 0; i < 100*1000; i++) {
 		Xor		g = finite_diff(m, epsilon);
-		m = learn(m , g, learnin_rate);
+		m = learn(m, g, learnin_rate);
 	};
 
 	printf("------------------------------\n");

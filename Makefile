@@ -1,5 +1,6 @@
 O = objs/
 S = src/
+I = includes/
 
 NAME =	machine_learning_c
 
@@ -47,6 +48,9 @@ gates: $(OBJ_GATES)
 
 xor: $(OBJ_XOR)
 	$(CC) $(CFLAGS) $(SRC_XOR) -o xor -I ./includes -lm
+
+nn: $Snn.c $Inn.h
+	$(CC) $(CFLAGS) $Snn.c -o nn -I ./includes -lm
 
 clean:
 	rm -rf $(SRC:$S%=$O%.o)
