@@ -27,7 +27,7 @@ typedef struct {
 Matrix mat_alloc(size_t rows, size_t cols);
 void mat_sum(Matrix dest, Matrix a); //Il n'y  pas besoin de transmettre un pointeur ici car la structure Matrix comporte un pointeur sur le det de la donnee, soit la matrix
 void mat_dot(Matrix dest, Matrix a, Matrix b);
-void mat_print(Matrix m);
+void mat_print(Matrix m, const char *name);
 void mat_fill(Matrix m, float x);
 
 float rand_float(void);
@@ -94,14 +94,19 @@ void mat_dot(Matrix dest, Matrix a, Matrix b)
     };
 };
 
-void mat_print(Matrix m)
+#define MAT_PRINT(m) mat_print(m, #m);
+
+void mat_print(Matrix m, const char *name)
 {
+    printf("\n\nMatrix %s\n", name);
+    printf("[\n");
     for (size_t i = 0; i < m.rows; i++) {
         for  (size_t j = 0; j < m.cols; j++) {
-            printf("%f ", MAT_AT(m, i, j));
+            printf("    %f ", MAT_AT(m, i, j));
         };
         printf("\n");
     };
+    printf("]\n");
 };
 
 void mat_fill(Matrix m, float x)
